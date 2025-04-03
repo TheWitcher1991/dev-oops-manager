@@ -1,0 +1,55 @@
+{
+  "name": "dev-oops-manager",
+  "description": "mono-repository",
+  "version": "1.0.0",
+  "private": true,
+  "author": "TheWitcher1991 <ashot.svazyan@yandex.ru>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thewitcher1991/dev-oops-manager"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "prebuild": "turbo prebuild",
+    "start": "turbo start",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo check-types"
+  },
+  "devDependencies": {
+    "@gravity-ui/eslint-config": "^3.3.0",
+    "@gravity-ui/icons": "^2.13.0",
+    "@gravity-ui/navigation": "^3.3.4",
+    "@gravity-ui/tsconfig": "^1.0.0",
+    "@gravity-ui/uikit": "^7.8.0",
+    "@hookform/resolvers": "^5.0.1",
+    "@tabler/icons-react": "^3.31.0",
+    "@tanstack/react-query": "^5.71.5",
+    "@tanstack/react-query-devtools": "^5.71.5",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
+    "axios": "^1.8.4",
+    "cross-env": "^7.0.3",
+    "date-fns": "^4.1.0",
+    "prettier": "^3.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.55.0",
+    "react-hot-toast": "^2.5.2",
+    "react-use": "^17.6.0",
+    "sharp": "^0.33.5",
+    "svgo": "^3.3.2",
+    "tsup": "^8.4.0",
+    "turbo": "^2.4.4",
+    "typescript": "5.8.2",
+    "zod": "^3.24.2",
+    "zustand": "^5.0.3"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

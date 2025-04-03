@@ -1,0 +1,35 @@
+name: Clients CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 20 ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Clear npm cache
+        run: pnpm cache clean --force
+
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: ./clients
+
+      - name: Run lint
+        run: pnpm lint
+        working-directory: ./clients
+
+      - name: Run build
+        run: pnpm build
+        working-directory: ./clients

@@ -1,0 +1,147 @@
+name: hey-hey-preproduction
+
+version: '3'
+
+services:
+  nginx:
+    image: ${IMAGE_NAME_NGINX}:${IMAGE_TAG_NGINX}
+    container_name: nginx-service
+    volumes:
+      - ./docker/nginx/base-nginx.conf:/etc/nginx/base-nginx.conf:ro
+      - ./docker/nginx/ssl-dhparams.pem:/etc/nginx/ssl-dhparams.pem:ro
+      - ./docker/nginx/options-ssl-nginx.conf:/etc/letsencrypt/options-ssl-nginx.conf:ro
+      - ./docker/nginx/heydev/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/www:/var/www/certbot:ro
+      - ./certbot/conf/:/etc/nginx/ssl:ro
+      - core_api_staticfiles:/home/services/core/staticfiles:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - frontend
+      - backend
+    restart: always
+
+  certbot:
+    image: ${IMAGE_NAME_CERTBOT}:${IMAGE_TAG_CERTBOT}
+    container_name: certbot-service
+    volumes:
+      - ./certbot/www/:/var/www/certbot:rw
+      - ./certbot/conf/:/etc/letsencrypt:rw
+    networks:
+      - frontend
+      - backend
+
+  core-db:
+    extends:
+      file: ./docker-compose.base.yml
+      service: postgres
+    container_name: core-db-service
+    env_file:
+      - ./services/core/.env.preprod
+
+  core-redis:
+    extends:
+      file: ./docker-compose.base.yml
+      service: redis
+    container_name: core-redis-service
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}" --maxmemory 1024mb --maxmemory-policy volatile-lru
+    env_file:
+      - ./services/core/.env.preprod
+
+  core-api:
+    extends:
+      file: ./docker-compose.base.yml
+      service: core-api
+    build:
+      context: ./services/core
+      dockerfile: Dockerfile-prod
+    container_name: core-api-service
+    depends_on:
+      core-db:
+        condition: service_healthy
+      core-redis:
+        condition: service_healthy
+    command:
+      - /bin/sh
+      - -c
+      - ./migrations.sh && ./gunicorn.sh
+    environment:
+      ENV_MODE: preproduction
+      WORKERS: 2
+      THREADS: 2
+
+  tma-client:
+    extends:
+      file: ./docker-compose.base.yml
+      service: core-client
+    build:
+      context: ./clients
+      dockerfile: Dockerfile-tma
+      args:
+        VITE_API_URL: https://api.heydev.ru
+    container_name: tma-client-service
+
+  web-client:
+    extends:
+      file: ./docker-compose.base.yml
+      service: core-client
+    build:
+      context: ./clients
+      dockerfile: Dockerfile-web
+      args:
+        NEXT_PUBLIC_API_URL: https://api.heydev.ru
+    container_name: web-client-service
+
+  grafana:
+    extends:
+      file: ./docker-compose.base.yml
+      service: grafana
+    container_name: grafana-service
+    env_file:
+      - ./docker/grafana/.env
+
+  prometheus:
+    extends:
+      file: ./docker-compose.base.yml
+      service: prometheus
+    container_name: prometheus-service
+    volumes:
+      - ./docker/prometheus/heydev/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+
+  cadvisor:
+    extends:
+      file: ./docker-compose.base.yml
+      service: cadvisor
+    container_name: cadvisor-service
+
+  node-exporter:
+    extends:
+      file: ./docker-compose.base.yml
+      service: node-exporter
+    container_name: node-exporter-service
+
+  postgres-exporter:
+    extends:
+      file: ./docker-compose.base.yml
+      service: postgres-exporter
+    container_name: postgres-exporter-service
+    env_file:
+      - ./services/core/.env.preprod
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+  core_api_staticfiles:
+  postgres_data:
+  redis_data:
+  grafana_data:
+  prometheus_data:

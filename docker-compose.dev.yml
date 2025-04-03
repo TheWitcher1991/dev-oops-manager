@@ -1,0 +1,47 @@
+name: hey-hey-develop
+
+version: '3'
+
+services:
+  core-db:
+    extends:
+      file: ./docker-compose.base.yml
+      service: postgres
+    container_name: core-db-service
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./services/core/.env.dev
+
+  core-redis:
+    extends:
+      file: ./docker-compose.base.yml
+      service: redis
+    container_name: core-redis-service
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --maxmemory 512mb --maxmemory-policy volatile-lru
+    ports:
+      - "6379:6379"
+    env_file:
+      - ./services/core/.env.dev
+
+  core-api:
+    extends:
+      file: ./docker-compose.base.yml
+      service: core-api
+    build:
+      context: ./services/core
+      dockerfile: Dockerfile-dev
+    container_name: core-api-service
+    ports:
+      - "8000:8000"
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -1,0 +1,137 @@
+name: hey-hey-base
+
+version: '3'
+
+services:
+  #clickhouse:
+  #  image: ${IMAGE_NAME_CLICKHOUSE}:${IMAGE_TAG_CLICKHOUSE}
+  #  environment:
+  #    CLICKHOUSE_USER: guest
+  #    CLICKHOUSE_PASSWORD: guest
+  #    CLICKHOUSE_DB: test_db
+  #    CLICKHOUSE_DEFAULT_PROFILE: default
+  #    CLICKHOUSE_LOG_LEVEL: "trace"
+  #  ports:
+  #    - "8123:8123"
+  #    - "9000:9000"
+  #  volumes:
+  #    - clickhouse_data:/var/lib/clickhouse
+  #  networks:
+  #    - backend
+  #  restart: always
+  #  healthcheck:
+  #    test: [ "CMD", "wget --spider -q localhost:8123/ping" ]
+  #    interval: 10s
+  #    timeout: 5s
+  #    retries: 5
+
+  postgres:
+    image: ${IMAGE_NAME_POSTGRES}:${IMAGE_TAG_POSTGRES}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: ${IMAGE_NAME_REDIS}:${IMAGE_TAG_REDIS}
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+    restart: always
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 3s
+      timeout: 10s
+      retries: 3
+
+  core-api:
+    volumes:
+      - core_api_staticfiles:/home/services/core/staticfiles
+    networks:
+      - frontend
+      - backend
+    restart: always
+
+  core-client:
+    networks:
+      - frontend
+    restart: always
+
+  grafana:
+    image: ${IMAGE_NAME_GRAFANA}:${IMAGE_TAG_GRAFANA}
+    volumes:
+      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - grafana_data:/var/lib/grafana
+    networks:
+      - backend
+    restart: unless-stopped
+
+  prometheus:
+    image: ${IMAGE_NAME_PROMETHEUS}:${IMAGE_TAG_PROMETHEUS}
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+      - "--log.level=warn"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  cadvisor:
+    image: ${IMAGE_NAME_CADVISOR}:${IMAGE_TAG_CADVISOR}
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+  node-exporter:
+    image: ${IMAGE_NAME_NODE_EXPORTER}:${IMAGE_TAG_NODE_EXPORTER}
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - backend
+    restart: unless-stopped
+
+  postgres-exporter:
+    image: ${IMAGE_NAME_POSTGRES_EXPORTER}:${IMAGE_TAG_POSTGRES_EXPORTER}
+    # configs:
+    #   - source: postgres-exporter-config
+    #    target: /etc/postgres_exporter/queries.yaml
+    networks:
+      - backend
+    restart: unless-stopped
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+  core_api_staticfiles:
+  postgres_data:
+  redis_data:
+  grafana_data:
