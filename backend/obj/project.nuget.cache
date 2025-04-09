@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "LGmTihJHtM3hUOfakNaqrXf37jingYSUp3/Ho7EewadsBDByoW16fRwtPN9nUluXAFrpomxctBaP1C8YoeQrMg==",
+  "success": true,
+  "projectFilePath": "C:\\Project\\NextJS\\dev-oops-manager\\backend\\backend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ashot\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.0\\microsoft.visualstudio.azure.containers.tools.targets.1.17.0.nupkg.sha512"
+  ],
+  "logs": []
+}
