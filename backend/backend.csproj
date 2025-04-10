@@ -21,8 +21,7 @@
     <Folder Include="Application\Commands\" />
     <Folder Include="Application\Queries\" />
     <Folder Include="Contracts\Dtos\" />
-    <Folder Include="Domain\Entities\" />
-    <Folder Include="Infrastructure\Repositories\" />
+    <Folder Include="Domain\ValueObjects\" />
     <Folder Include="Infrastructure\Configurations\" />
     <Folder Include="Infrastructure\Mappers\" />
     <Folder Include="Infrastructure\Abstractions\" />

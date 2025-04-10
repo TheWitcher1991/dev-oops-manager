@@ -1,6 +1,10 @@
-﻿namespace backend.Infrastructure
+﻿using AutoMapper;
+
+namespace backend.Infrastructure
 {
-    public class MappingProfile
+    public class MappingProfile : Profile
     {
+        public MappingProfile() { 
+        }
     }
 }

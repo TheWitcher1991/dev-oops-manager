@@ -3,7 +3,7 @@
     public enum Role
     {
         Organizer = 1,
-        Participant = 2,
+        Member = 2,
         Moderator = 3
     }
 }

@@ -1,6 +1,12 @@
 ﻿namespace backend.Shared.Enums
 {
-    public class ErrorType
+    public enum ErrorType
     {
+        None,
+        Validation,
+        NotFound,
+        Failure,
+        Null,
+        Conflict
     }
 }
