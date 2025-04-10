@@ -1,4 +1,6 @@
 using AutoMapper;
+using backend.Api.Extensions;
+using backend.Api.Middlewares;
 using backend.Infrastructure;
 using backend.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,6 +29,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddLowerCaseRouting();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -40,7 +43,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddHealthChecks();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -84,10 +86,9 @@ builder.Services.AddResponseCompression(options =>
     options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "image/png", "application/pdf" });
 });
 
-
 var app = builder.Build();
 
-// app.UseExceptionMiddleware();
+app.UseExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
@@ -107,6 +108,7 @@ app.UseCookiePolicy(new CookiePolicyOptions
 
 app.UseCors("AllowCors");
 
+app.UseScopeDataMiddleware();
 app.UseAuthentication();
 app.UseAuthorization();
 
