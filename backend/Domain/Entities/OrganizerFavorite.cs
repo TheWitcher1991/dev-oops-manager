@@ -1,8 +1,9 @@
-﻿namespace backend.Domain.Entities
+﻿using backend.Shared.Core;
+
+namespace backend.Domain.Entities
 {
-    public class OrganizerFavorite
+    public class OrganizerFavorite : BaseEntity
     {
-        public bool Comming { get; private set; } = true;
         public Guid EventId { get; private set; }
         public Guid OrganizerId { get; private set; }
         public Event Event { get; private set; } = null!;

@@ -6,6 +6,8 @@ namespace backend.Shared
     {
         public static int MAX_TITLE_LENGTH = 255;
         public static int MAX_PHONE_LENGTH = 20;
+        public static int MAX_INN_LENGTH = 12;
+        public static int MAX_OGRN_LENGTH = 15;
         public static int MAX_DESCRIPTION_LENGTH = 3000;
         public static int SESSION_EXPIRES_HOURS = 730;
         public static string TOKEN_NAME = "access_token";

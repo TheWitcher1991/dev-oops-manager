@@ -1,6 +1,12 @@
-﻿namespace backend.Shared.Enums
+﻿using System.ComponentModel;
+
+namespace backend.Shared.Enums
 {
-    public class Format
+    public enum Format
     {
+        [Description("Онлайн")]
+        Online = 0,
+        [Description("Офлайн")]
+        Offile = 1
     }
 }
