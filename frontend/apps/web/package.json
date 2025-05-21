@@ -1,8 +1,12 @@
 {
   "name": "web",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "private": true,
+  "sideEffects": [
+    "*.scss",
+    "*.sass"
+  ],
   "scripts": {
     "dev": "next dev --turbopack --port 3000",
     "build": "next build",
@@ -12,18 +16,18 @@
   },
   "dependencies": {
     "@oops/hooks": "workspace:*",
-    "@oops/schemas": "workspace:*",
+    "@oops/links": "workspace:*",
+    "@oops/models": "workspace:*",
     "@oops/system": "workspace:*",
     "@oops/toolkit": "workspace:*",
-    "next": "^15.2.1",
+    "@oops/uikit": "workspace:*",
+    "next": "^15.3.0",
     "next-nprogress-bar": "^2.4.7"
   },
   "devDependencies": {
     "@oops/eslint-config": "workspace:*",
-    "@oops/types": "workspace:*",
     "@oops/typescript-config": "workspace:*",
-    "@svgr/webpack": "^8.1.0",
-    "sass": "^1.84.0",
-    "sass-loader": "^16.0.4"
+    "@oops/types": "workspace:*",
+    "@svgr/webpack": "^8.1.0"
   }
 }

@@ -16,7 +16,7 @@
     "^~providers/(.*)$",
     "^~models/(.*)$",
     "^~packages/(.*)$",
-    "^@repo/(.*)$",
+    "^@oops/(.*)$",
     "^~shared/(.*)$",
     "^~atoms/(.*)$",
     "^~links/(.*)$",

@@ -1,8 +1,11 @@
 {
-  "name": "@oops/schemas",
+  "name": "@oops/uikit",
   "version": "1.0.0",
   "private": true,
-  "sideEffects": false,
+  "sideEffects": [
+    "*.scss",
+    "*.sass"
+  ],
   "main": "src/index.ts",
   "files": [
     "dist"
@@ -10,15 +13,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "exports": {
+    "./styles": "./styles/globals.scss"
+  },
   "scripts": {
     "build": "tsup src --dts",
     "build:fast": "tsup src",
     "dev": "pnpm build:fast --watch",
     "clean": "rimraf dist .turbo",
     "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@oops/toolkit": "workspace:*"
   },
   "devDependencies": {
     "@oops/types": "workspace:*",
