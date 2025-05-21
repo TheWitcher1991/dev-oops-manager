@@ -1,5 +1,9 @@
 import React from 'react'
 
+export type EnumType<T> = T[keyof T]
+
+export type Dictionary<T = unknown> = Record<string, T>
+
 export type EmptyObject = Record<string, never>
 
 export type Nullable<T> = T | null
@@ -20,6 +24,12 @@ interface ResultError {
 	type: string
 }
 
+export type OnUploadProgress = (
+	progress: number,
+	uploaded: number,
+	total: number,
+) => void
+
 export interface ResultResponse<RESULT> {
 	result: RESULT
 	error_list: Error[]
@@ -27,20 +37,11 @@ export interface ResultResponse<RESULT> {
 	time_generated: string
 }
 
-export interface ListResponse<RESULTS = [], META = Record<string, any>> {
-	count: number
-	pages: number
-	next: Nullable<string>
-	previous: Nullable<string>
-	meta: META
-	results: RESULTS[]
-}
-
 export type ValidationErrorResponse =
 	| string
 	| string[]
-	| Record<string, string>
-	| Record<string, string[]>
+	| Dictionary<string>
+	| Dictionary<string[]>
 
 export type ModelListField<
 	T,
@@ -49,11 +50,11 @@ export type ModelListField<
 > = {
 	count: number
 	loading: boolean
+	error: boolean
 	fetching?: boolean
 	list: T[]
 	filter: U
-	meta: M
-	checked?: Collection[]
+	checked?: number[]
 }
 
 export type ModelListState<
@@ -62,11 +63,11 @@ export type ModelListState<
 	M extends Record<string, any> = Record<string, any>,
 > = {
 	setCount: (count: number) => void
+	setError: (error: boolean) => void
 	setLoading: (loading: boolean) => void
 	setFetching: (fetching: boolean) => void
-	setChecked: (checked: Collection[]) => void
+	setChecked: (checked: number[]) => void
 	setList: (list: T[]) => void
-	setMeta: (meta: M) => void
 	setFilter: (filter: U) => void
 	reset: () => void
 } & ModelListField<T, U, M>

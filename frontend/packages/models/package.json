@@ -18,6 +18,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@oops/links": "workspace:*",
+    "@oops/system": "workspace:*",
     "@oops/toolkit": "workspace:*"
   },
   "devDependencies": {

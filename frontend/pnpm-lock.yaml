@@ -219,6 +219,12 @@ importers:
 
   packages/models:
     dependencies:
+      '@oops/links':
+        specifier: workspace:*
+        version: link:../links
+      '@oops/system':
+        specifier: workspace:*
+        version: link:../system
       '@oops/toolkit':
         specifier: workspace:*
         version: link:../toolkit
