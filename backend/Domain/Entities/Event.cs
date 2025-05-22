@@ -13,11 +13,10 @@ namespace backend.Domain.Entities
         public int TeamMin { get; private set; } = 1;
         public DateTime DateStart { get; private set; }
         public DateTime DateEnd { get; private set; }
-        public Format Format { get; private set; } = Format.Offile;
+        public Format Format { get; private set; } = Format.Offline;
         public Spec Spec { get; private set; } = Spec.Conference;
         public Guid OrganizerId { get; private set; }
         public Organizer Organizer { get; private set; } = null!;
-        public List<Category> Categories { get; private set; } = new List<Category>();
         public List<Tag> Tags { get; private set; } = new List<Tag>();
     }
 }

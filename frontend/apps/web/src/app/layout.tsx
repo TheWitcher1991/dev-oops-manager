@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { ReactNode } from 'react'
+import WithProviders from '~providers'
 
 import './globals.scss'
 
@@ -25,7 +26,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='ru' suppressHydrationWarning>
-			<body className={'g-root g-root_theme_dark'}>{children}</body>
+			<body>
+				<WithProviders>{children}</WithProviders>
+			</body>
 		</html>
 	)
 }

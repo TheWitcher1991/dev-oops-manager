@@ -1,5 +1,5 @@
-import type React, { JSXElementConstructor } from 'react'
-import { Store } from 'effector'
+import type React, { type JSXElementConstructor } from 'react'
+import type { Store } from 'effector'
 
 declare module '*.css'
 declare module '*.scss'

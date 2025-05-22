@@ -4,6 +4,6 @@ namespace backend.Domain.Entities
 {
     public class Tag : BaseEntity
     {
-        public string Name { get; private set; } = string.Empty;
+        public string Title { get; private set; } = string.Empty;
     }
 }

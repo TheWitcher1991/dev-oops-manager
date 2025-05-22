@@ -1,4 +1,5 @@
 import React from 'react'
+import { ObjectSchema } from 'valibot'
 
 export type EnumType<T> = T[keyof T]
 
@@ -77,3 +78,22 @@ export interface UseModelOptions<ORDERING extends string = string>
 	query: string
 	ordering: ORDERING
 }
+
+export type MergeObjectEntries<T extends ObjectSchema<any, any>[]> =
+	UnionToIntersection<
+		T[number] extends ObjectSchema<infer R, any> ? R : never
+	>
+
+export type UnionToIntersection<U> = (
+	U extends any ? (k: U) => void : never
+) extends (k: infer I) => void
+	? I
+	: never
+
+export const RequestStatus = {
+	Accepted: 0,
+	Rejected: 1,
+	Pending: 2,
+} as const
+
+export type RequestStatus = EnumType<RequestStatus>

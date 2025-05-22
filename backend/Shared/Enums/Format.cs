@@ -7,6 +7,6 @@ namespace backend.Shared.Enums
         [Description("Онлайн")]
         Online = 0,
         [Description("Офлайн")]
-        Offile = 1
+        Offline = 1
     }
 }

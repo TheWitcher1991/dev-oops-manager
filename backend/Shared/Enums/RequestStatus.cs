@@ -9,6 +9,6 @@ namespace backend.Shared.Enums
         [Description("Отклонен")]
         Rejected = 1,
         [Description("Ожидание")]
-        Request = 2,
+        Pending = 2,
     }
 }

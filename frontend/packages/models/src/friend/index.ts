@@ -1,0 +1,6 @@
+export * from './friend.config'
+export * from './friend.schema'
+export * from './friend.types'
+export * from './friend.repository'
+export * from './friend.mutations'
+export * from './friend.queries'
