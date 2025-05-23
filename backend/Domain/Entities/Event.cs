@@ -17,6 +17,7 @@ namespace backend.Domain.Entities
         public Spec Spec { get; private set; } = Spec.Conference;
         public Guid OrganizerId { get; private set; }
         public Organizer Organizer { get; private set; } = null!;
+        public List<Category> Categories { get; private set; } = new List<Category>();
         public List<Tag> Tags { get; private set; } = new List<Tag>();
     }
 }

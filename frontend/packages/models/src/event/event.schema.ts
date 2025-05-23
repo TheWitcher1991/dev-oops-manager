@@ -1,3 +1,4 @@
+import { CategorySchema } from '../category'
 import { OrganizerSchema } from '../organizer'
 import { TagSchema } from '../tag'
 import { array, enum_, object } from 'valibot'
@@ -25,6 +26,7 @@ export const EventSchema = merge(
 		photo: vSchema.url,
 		organizer: OrganizerSchema,
 		tags: array(TagSchema),
+		categories: array(CategorySchema),
 	}),
 )
 
@@ -34,6 +36,7 @@ export const CreateEventSchema = merge(
 		photo: vSchema.image,
 		organizer: vSchema.uuid,
 		tags: array(vSchema.uuid),
+		categories: array(vSchema.uuid),
 	}),
 )
 
@@ -42,5 +45,6 @@ export const UpdateEventSchema = merge(
 	object({
 		photo: vSchema.image,
 		tags: array(vSchema.uuid),
+		categories: array(vSchema.uuid),
 	}),
 )
