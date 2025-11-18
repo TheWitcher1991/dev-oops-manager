@@ -1,12 +1,15 @@
 import { prepareRequestParams } from '../fn'
-import { AxiosInstance, AxiosResponse } from 'axios'
+import { AxiosInstance } from 'axios'
+
+import type { Dictionary, Response } from '@oops/types'
 
 import { BaseRepository } from './base'
 
 export class ReadonlyRepository<
 	LIST_GET,
 	GET,
-	OPTIONS = Record<string, any>,
+	OPTIONS = Dictionary<any>,
+	ID extends string | number = number,
 > extends BaseRepository {
 	constructor(
 		readonly http: AxiosInstance,
@@ -15,17 +18,19 @@ export class ReadonlyRepository<
 		super(http, URL)
 	}
 
-	async all(params?: Partial<OPTIONS>): Promise<AxiosResponse<LIST_GET>> {
-		return await this.instance.get<LIST_GET>(`${this.URL}/`, {
+	async findAll(
+		params?: Partial<OPTIONS>,
+		signal?: AbortSignal,
+	): Response<LIST_GET> {
+		return await this.http.get<LIST_GET>(`${this.URL}/`, {
 			params: prepareRequestParams(params),
+			signal,
 		})
 	}
 
-	async disabledPagination(): Promise<AxiosResponse<GET[]>> {
-		return await this.instance.get(`${this.URL}/`)
-	}
-
-	async getById(id: number): Promise<AxiosResponse<GET>> {
-		return await this.instance.get<GET>(`${this.URL}/${id}/`)
+	async findById(id: ID, signal?: AbortSignal): Response<GET> {
+		return await this.http.get<GET>(`${this.URL}/${id}/`, {
+			signal,
+		})
 	}
 }

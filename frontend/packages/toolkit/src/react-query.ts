@@ -11,14 +11,20 @@ export const queryClient = new QueryClient({
 	},
 })
 
-export const optimisticInvalidateQueries = async (
-	queries: ReadonlyArray<unknown>[],
-) => {
+export const optimisticInvalidateQueries = async (queries: QueryKey[]) => {
 	if (queries.length === 0) return
 
-	for (const val of queries) {
-		await queryClient.invalidateQueries({
-			queryKey: val,
-		})
-	}
+	await Promise.all(
+		queries.map(queryKey =>
+			queryClient.invalidateQueries({
+				queryKey,
+			}),
+		),
+	)
+}
+
+export const cancelQueries = (queryKey: QueryKey) => {
+	queryClient.cancelQueries({
+		queryKey,
+	})
 }

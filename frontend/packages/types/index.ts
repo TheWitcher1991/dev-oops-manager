@@ -1,5 +1,10 @@
+import { AxiosResponse } from 'axios'
 import React from 'react'
 import { ObjectSchema } from 'valibot'
+
+declare const __brand: unique symbol
+
+export type Branded<T, UniqueKey extends string> = T & { __brand: UniqueKey }
 
 export type EnumType<T> = T[keyof T]
 
@@ -8,6 +13,16 @@ export type Dictionary<T = unknown> = Record<string, T>
 export type EmptyObject = Record<string, never>
 
 export type Nullable<T> = T | null
+
+export type InjectProps<
+	Key extends string,
+	Value,
+	Extras extends Record<string, any> = {},
+> = {
+	[K in Key]: Value
+} & Extras
+
+export type Response<T> = Promise<AxiosResponse<T>>
 
 interface ModalProps {
 	open: boolean
@@ -36,6 +51,13 @@ export interface ResultResponse<RESULT> {
 	error_list: Error[]
 	is_error: boolean
 	time_generated: string
+}
+
+export type Paginated<T> = T[]
+
+export type PaginateQuery = {
+	page: number
+	pageSize: number
 }
 
 export type ValidationErrorResponse =
@@ -74,7 +96,7 @@ export type ModelListState<
 } & ModelListField<T, U, M>
 
 export interface UseModelOptions<ORDERING extends string = string>
-	extends PaginationPageSize {
+	extends PaginateQuery {
 	query: string
 	ordering: ORDERING
 }
@@ -97,3 +119,5 @@ export const RequestStatus = {
 } as const
 
 export type RequestStatus = EnumType<RequestStatus>
+
+export type Slug = string | number

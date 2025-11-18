@@ -1,5 +1,6 @@
 import {
 	array,
+	BaseSchema,
 	custom,
 	email,
 	instance,
@@ -18,12 +19,13 @@ import {
 	regex,
 	startsWith,
 	string,
+	transform,
 	url,
 	uuid,
 } from 'valibot'
 
 import { IMAGE_FILE_TYPES } from '@oops/system'
-import { MergeObjectEntries } from '@oops/types'
+import { Branded, MergeObjectEntries } from '@oops/types'
 
 import { regexPatterns } from './regex'
 
@@ -78,11 +80,22 @@ export const vSchema = {
 		pipe(string(), minLength(min), maxLength(max)),
 }
 
-export const BaseModelSchema = object({
-	id: vSchema.uuid,
-	createdAt: vSchema.datetime,
-	updatedAt: vSchema.datetime,
-})
+export const BaseModelSchema = (id: BaseSchema<number, any, any>) =>
+	object({
+		id,
+		createdAt: vSchema.datetime,
+		updatedAt: vSchema.datetime,
+	})
+
+export function vBrand<T, B extends string>(
+	schema: BaseSchema<T, any, any>,
+	_brand: B,
+) {
+	return pipe(
+		schema,
+		transform((val): Branded<T, B> => val as Branded<T, B>),
+	)
+}
 
 export function merge<Schemas extends ObjectSchema<any, any>[]>(
 	...schemas: Schemas

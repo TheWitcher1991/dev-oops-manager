@@ -54,3 +54,6 @@ export const createRequestFx =
 			...(params as CreateRequestParams),
 			payload,
 		})
+
+export type CreateRequestFx = ReturnType<typeof createRequestFx>
+export type CreateRequestInstance = ReturnType<typeof createRequestInstance>

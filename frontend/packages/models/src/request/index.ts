@@ -2,7 +2,7 @@ import { $account } from '../auth'
 import type { CreateAxiosDefaults } from 'axios'
 
 import { API_URL } from '@oops/system'
-import { createRequestFx, HTTP } from '@oops/toolkit'
+import { createRequestFx, AxiosHttpClient } from '@oops/toolkit'
 
 const config: CreateAxiosDefaults = {
 	baseURL: `${API_URL}/`,
@@ -17,11 +17,9 @@ const config: CreateAxiosDefaults = {
 	},
 }
 
-export const http = new HTTP({
-	config: config,
-})
+export const http = new AxiosHttpClient(config).instance
 
 export const queryFx = createRequestFx({
 	baseURL: API_URL,
-	token: $account.getState().access_token,
+	token: $account.getState()?.access_token as string,
 })
